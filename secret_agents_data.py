@@ -1,18 +1,18 @@
 from faker import Faker
 import random
+from tabulate import tabulate  
 
 fake = Faker()
 
-statuses = ['Active', 'Inactive', 'Retired', 'On Leave']
-
-ranks = ['Agent', 'Senior Agent', 'Supervisor', 'Chief']
+statuses = ('Active', 'Inactive', 'Retired', 'On Leave')
+ranks = ('Agent', 'Senior Agent', 'Supervisor', 'Chief')
 
 def generate_meeting_address():
     return f"{fake.street_address()}\n{fake.city()}, {fake.postcode()}"
 
 agents_data = []
 
-for i in range(100):
+for i in range(10):
     agent = {
         'id': i,
         'alias': fake.user_name(),  
@@ -25,21 +25,24 @@ for i in range(100):
     }
     agents_data.append(agent)
 
-for agent in agents_data[:10]:
-    print(f"ID: {agent['id']}")
-    print(f"Псевдоним: {agent['alias']}")
-    print(f"Настоящее имя: {agent['real_name']}")
-    print(f"Звание: {agent['rank']}")
-    print(f"Статус: {agent['status']}")
-    print(f"Номер значка: {agent['badge_number']}")
-    print(f"Адрес явки: {agent['meeting_location']}")
-    print(f"Контактный код: {agent['contact_code']}")
-    print("-" * 40)
+table_data = [[
+    agent['id'],
+    agent['alias'],
+    agent['real_name'],
+    agent['rank'],
+    agent['status'],
+    agent['badge_number'],
+    agent['meeting_location'],
+    agent['contact_code']
+] for agent in agents_data]
+
+headers = ['ID', 'Псевдоним', 'Настоящее имя', 'Звание', 'Статус', 'Номер значка', 'Адрес явки', 'Контактный код']
+print(tabulate(table_data, headers, tablefmt="grid"))
 
 import csv
 
 keys = agents_data[0].keys()
-with open('secret_service_agents.csv', 'w', newline='') as output_file:
+with open('secret_service_agents.csv', 'w', newline='', encoding='utf-8') as output_file:
     dict_writer = csv.DictWriter(output_file, fieldnames=keys)
     dict_writer.writeheader()
     dict_writer.writerows(agents_data)
