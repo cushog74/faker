@@ -23,7 +23,7 @@ fake.add_provider(ranks_provider)
 # Генерация случайных данных
 cardinality = 101  # Количество записей
 
-# Исправленная генерация ID удостоверений
+# Генерация ID удостоверений
 badge_numbers = [f"{random.randint(1000, 9999)}-{random.randint(1000, 9999)}" for _ in range(cardinality)]
 
 # Генерация данных
@@ -56,8 +56,8 @@ table_data = [
     for entry in agents_data
 ]
 
-# Добавляем нумерацию
-numbered_data = [i+1] + row for i, row in enumerate(table_data)
+# Правильно формируем нумерованный список
+numbered_data = [[i + 1] + row for i, row in enumerate(table_data)]
 
 # Заголовки таблицы
 headers = ['№', 'ID', 'Псевдоним', 'Настоящее имя', 'Звание', 'Статус', 'Номер значка', 'Адрес явки', 'Код контакта']
